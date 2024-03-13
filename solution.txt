@@ -1,0 +1,114 @@
+-- Create the database and connect to it
+CREATE DATABASE universe;
+
+\c universe;
+
+-- Create the galaxy table
+CREATE TABLE galaxy (
+    galaxy_id SERIAL PRIMARY KEY,
+    age_in_million_of_years INTEGER,
+    description TEXT,
+    name VARCHAR(255) UNIQUE,
+    size INTEGER NOT NULL
+);
+
+-- Create the moon table
+CREATE TABLE moon (
+    moon_id SERIAL PRIMARY KEY,
+    has_life BOOLEAN,
+    age_in_million_of_years INTEGER,
+    distance_from_earth NUMERIC,
+    has_water BOOLEAN,
+    planet_id INTEGER NOT NULL,
+    name VARCHAR(255),
+    FOREIGN KEY (planet_id) REFERENCES planet (planet_id)
+);
+
+-- Create the planet table
+CREATE TABLE planet (
+    planet_id SERIAL PRIMARY KEY,
+    has_life BOOLEAN,
+    is_spherical BOOLEAN,
+    age_in_millions_of_years INTEGER,
+    population NUMERIC,
+    star_id INTEGER NOT NULL,
+    name VARCHAR(255),
+    FOREIGN KEY (star_id) REFERENCES star (star_id)
+);
+
+-- Create the satellite table
+CREATE TABLE satellite (
+    satellite_id SERIAL PRIMARY KEY,
+    name VARCHAR(255) UNIQUE,
+    distance_from_earth NUMERIC,
+    description TEXT,
+    size INTEGER NOT NULL
+);
+
+-- Create the star table
+CREATE TABLE star (
+    star_id SERIAL PRIMARY KEY,
+    description TEXT,
+    is_spherical BOOLEAN,
+    age_in_millions_of_years INTEGER,
+    distance_from_earth NUMERIC,
+    galaxy_id INTEGER,
+    name VARCHAR(255) UNIQUE,
+    size INTEGER NOT NULL,
+    width INTEGER NOT NULL,
+    FOREIGN KEY (galaxy_id) REFERENCES galaxy (galaxy_id)
+);
+
+-- Insert data into the galaxy table
+INSERT INTO galaxy (galaxy_id, age_in_million_of_years, description, name, size) VALUES
+(1, 1000, 'Spiral galaxy with a prominent central bulge', 'Milky Way', 111121212),
+(2, 1300, 'Elliptical galaxy with little interstellar matter', 'M87', 111121212),
+(3, 5000, 'Irregular galaxy with ongoing star formation', 'Large Magellanic Cloud', 111121212),
+(4, 2000, 'Barred spiral galaxy with a central bar structure', 'NGC 1300', 111121212),
+(5, 7000, 'Lenticular galaxy with a disk but no spiral arms', 'NGC 2787', 111121212),
+(6, 1500, 'Dwarf galaxy orbiting the Milky Way', 'Sagittarius Dwarf Spheroidal', 111121212);
+
+-- Insert data into the moon table
+INSERT INTO moon (moon_id, has_life, age_in_million_of_years, distance_from_earth, has_water, planet_id, name) VALUES
+(1, false, 4500, 384400, true, 3, 'Luna'),
+(2, false, 4500, 181344, false, 3, 'Phobos'),
+(3, false, 4500, 9377, false, 3, 'Deimos'),
+(4, false, 5000, 1737300, false, 5, 'Io'),
+(5, false, 5000, 422000, false, 5, 'Europa'),
+(6, false, 5000, 671034, false, 5, 'Ganymede'),
+(7, false, 5000, 1070400, false, 5, 'Callisto'),
+(8, false, 6000, 421700, false, 6, 'Mimas'),
+(9, false, 6000, 237948, false, 6, 'Enceladus'),
+(10, false, 6000, 377396, false, 6, 'Tethys'),
+(11, false, 6000, 527108, false, 6, 'Dione'),
+(12, false, 6000, 1221930, false, 6, 'Rhea'),
+(13, false, 6000, 1471226, false, 6, 'Titan'),
+(14, false, 6000, 1352550, false, 6, 'Iapetus'),
+(15, false, 6000, 188270, false, 7, 'Miranda'),
+(16, false, 6000, 50000, false, 7, 'Ariel'),
+(17, false, 6000, 60000, false, 7, 'Umbriel'),
+(18, false, 6000, 90000, false, 7, 'Titania'),
+(19, false, 6000, 120000, false, 7, 'Oberon'),
+(20, false, 5500, 370300, false, 8, 'Triton');
+
+-- Insert data into the planet table
+INSERT INTO planet (planet_id, has_life, is_spherical, age_in_millions_of_years, population, star_id, name) VALUES
+(1, false, true, 4500, 0, 1, 'Mercury'),
+(2, false, true, 4600, 0, 1, 'Venus'),
+(3, false, true, 4500, 7.9, 1, 'Earth'),
+(4, false, true, 4000, 0, 2, 'Mars'),
+(5, false, false, 7000, 0, 2, 'Jupiter'),
+(6, false, false, 6000, 0, 2, 'Saturn'),
+(7, false, false, 5000, 0, 2, 'Uranus'),
+(8, false, false, 5000, 0, 2, 'Neptune'),
+(9, false, true, 4500, 0, 3, 'Kepler-186f'),
+(10, false, true, 5000, 0, 3, 'Proxima Centauri b'),
+(11, false, false, 6000, 0, 4, 'HD 189733b'),
+(12, false, false, 5500, 0, 4, 'WASP-12b');
+
+-- Insert data into the satellite table
+INSERT INTO satellite (satellite_id, name, distance_from_earth, description, size) VALUES
+(1, 'ISS', 420000, 'The International Space Station orbits Earth.', 357),
+(2, 'Hubble Space Telescope', 547000, 'A space telescope that has provided some of the most detailed images of distant galaxies, nebulae, and stars.', 13),
+(3, 'Voyager 1', 22424000000, 'A space probe launched by NASA in 1977 to study the outer Solar System.', 722),
+(4, 'Chang''e 5', 384000, 'A Chinese lunar exploration mission that successfully brought
